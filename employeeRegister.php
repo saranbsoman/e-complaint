@@ -1,3 +1,11 @@
+<?php 
+if(!isset($_SESSION)) { 
+    session_start();
+    }
+if(!isset($_SESSION['uid'])){
+	header('location:index.php');
+  } ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,10 +39,10 @@
 <body>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
+    <!-- <div class="navbar-header">
       <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
-    <ul class="nav navbar-nav">
+    </div> -->
+    <ul style='display: block;' class="nav navbar-nav">
       <li class="active"><a href="adminView.php">Home</a></li>
       <li><a href="employeeRegister.php">Add Employee</a></li>
       <li><a href="adminComplaintView.php">View Complaints</a></li>
@@ -55,24 +63,24 @@
 
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Name is required">
-						<input class="input100" type="text" name="name" placeholder="Name">
+						<input class="input100" type="text" name="name" placeholder="Name" required>
 						<span class="focus-input100"></span>
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Place is required">
-						<input class="input100" type="text" name="place" placeholder="Place">
+						<input class="input100" type="text" name="place" placeholder="Place" required>
 						<span class="focus-input100"></span>
 					</div>
 
 
                     <div class="wrap-input100 validate-input m-b-16" data-validate = "Phone number is required">
-						<input class="input100" type="text" name="cno" placeholder="Phone number">
+						<input class="input100" type="text" name="cno" placeholder="Phone number" required>
 						<span class="focus-input100"></span>
 					</div>
 
                     <div class="wrap-input100 validate-input m-b-16" data-validate = "Designation is required">
-						<input class="input100" type="text" name="desig" placeholder="Designation">
+						<input class="input100" type="text" name="desig" placeholder="Designation" required>
 						<span class="focus-input100"></span>
 					</div>
 
@@ -82,13 +90,13 @@
 					</div>
 
                     <div class="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
-						<input class="input100" type="text" name="uname" placeholder="Username">
+						<input class="input100" type="text" name="uname" placeholder="Email" required>
 						<span class="focus-input100"></span>
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+						<input class="input100" type="password" name="pass" placeholder="Password" required>
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -180,69 +188,107 @@
 <?php
 
     include 'db.php';
+	
 
     if(isset($_POST['register']))
     {
-        $name = $_POST['name'];
-        $place = $_POST['place'];
-        $cno = $_POST['cno'];
-        $desig = $_POST['desig'];
-		// $empimg = $_POST['empimg'];
-        $uname = $_POST['uname'];
-        $pass = $_POST['pass'];
+		if (isset($_POST['name']) and ($_POST['name']) != null) 
+        {
+            if (preg_match('/^[A-Z a-z]*$/', $_POST['name'])) 
+            {
+				if (isset($_POST['desig']) and ($_POST['desig']) != null) 
+        		{
+            		if (preg_match('/^[A-Z a-z]*$/', $_POST['desig'])) 
+            		{
+						if (isset($_POST['cno']) and ($_POST['cno']) != null) 
+                        {
+							if (preg_match('/^[1-9][0-9]{0,15}$/', $_POST['cno'])) 
+                        	{
+								if (isset($_POST['uname']) and ($_POST['uname']) != null)
+								{
+									if (preg_match('/^[a-z0-9]{4,12}/', $_POST['uname'])) 
+									{
+										if (isset($_POST['pass']) and ($_POST['pass']) != null)
+										{
+											$name = $_POST['name'];
+											$place = $_POST['place'];
+											$cno = $_POST['cno'];
+											$desig = $_POST['desig'];
+											// $empimg = $_POST['empimg'];
+											$uname = $_POST['uname'];
+											$pass = $_POST['pass'];
 
 		
 
-		$pass = md5($pass);
+											$pass = md5($pass);
 
 
-		// $uploaddir = '/empimg/';
-		// $uploadfile = $uploaddir . basename($_FILES['empimg']['name']);
+											// $uploaddir = '/empimg/';
+											// $uploadfile = $uploaddir . basename($_FILES['empimg']['name']);
 
-		// echo $uploadfile;exit;
+											// echo $uploadfile;exit;
 
-		// move_uploaded_file($_FILES['empimg']['tmp_name'], $uploadfile);
+											// move_uploaded_file($_FILES['empimg']['tmp_name'], $uploadfile);
 
 
-		//image upload
+											//image upload
 
-		$image = $_FILES['empimg']['name'];
-		// echo $image;exit;
-		$tempname = $_FILES['empimg']['tmp_name'];
-		// echo $tempname;exit;
-		move_uploaded_file($tempname,"empimage/".$image);
-		// exit;
+											$image = $_FILES['empimg']['name'];
+											// echo $image;exit;
+											$tempname = $_FILES['empimg']['tmp_name'];
+											// echo $tempname;exit;
+											move_uploaded_file($tempname,"empimage/".$image);
+											// exit;
 
-		//
+											//
 
-		// echo $pass;exit;
+											// echo $pass;exit;
 
-		$qry = "INSERT INTO login(username, password, status) values ('$uname','$pass',1)";
-		// echo "hello";exit;
-		// echo $qry;exit;
-		$r = mysqli_query($con, $qry);
+											$qry = "INSERT INTO login(username, password, status) values ('$uname','$pass',1)";
+											// echo "hello";exit;
+											// echo $qry;exit;
+											$r = mysqli_query($con, $qry);
 
-		$q1 = "SELECT lid from login WHERE username = '$uname' and password = '$pass'";
-		// echo $q1;exit;
-		$r1 = mysqli_query($con, $q1); 
+											$q1 = "SELECT lid from login WHERE username = '$uname' and password = '$pass'";
+											// echo $q1;exit;
+											$r1 = mysqli_query($con, $q1); 
 
-		$lid = null;
-		$row = mysqli_fetch_assoc($r1);
-		$lid = $row['lid'];
-		// echo $row['lid'];exit;
-      
-        $qry1 = "INSERT into employeereg(name,place,contactno,designation,image,lid) values ('$name','$place',$cno,'$desig','$image',$lid)";
-        // echo $qry1;exit;
-        $r2 = mysqli_query($con,$qry1);
-        if($r2 && $r)
-        {
-            echo "<script>alert('registration successful')</script>"; // used script for pop-up message
-            // echo "<script> location.href='index.php'; </script>";
-        }
-        else{
-            echo "<script>alert('registration failed')</script>";
-            
-        }
+											$lid = null;
+											$row = mysqli_fetch_assoc($r1);
+											$lid = $row['lid'];
+											// echo $row['lid'];exit;
+										
+											$qry1 = "INSERT into employeereg(name,place,contactno,designation,image,lid) values ('$name','$place',$cno,'$desig','$image',$lid)";
+											// echo $qry1;exit;
+											$r2 = mysqli_query($con,$qry1);
+											if($r2 && $r)
+											{
+												echo "<script>alert('registration successful')</script>"; // used script for pop-up message
+												// echo "<script> location.href='index.php'; </script>";
+											}
+											else{
+												echo "<script>alert('registration failed')</script>";
+												
+											}
+										}
+										else echo "<script>alert('password mandatory field')</script>";
+									}
+									else echo "<script>alert('Email is not valid')</script>";
+								} 
+								else echo "<script>alert('Email is mandatory')</script>";
+							} 
+							else echo "<script>alert('Enter Valid Phone number')</script>";
+						} 
+						else echo "<script>alert('Contact number mandatory')</script>";
+					} 
+					else echo "<script>alert('Enter valid designation')</script>";
+				} 
+				else echo "<script>alert('Designation is mandatory')</script>";
+			} 
+			else echo "<script>alert('Enter valid name')</script>";
+		} 
+		else echo "<script>alert('Name is mandatory')</script>";
     }
+
 
 ?>

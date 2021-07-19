@@ -1,10 +1,26 @@
+<?php
+include 'db.php';
+	if(!isset($_SESSION)) { 
+		session_start();
+		}
+		if(!isset($_SESSION['uid'])){
+			header('location:index.php');
+		  }
+
+	$lid =  $_SESSION['uid'];
+
+    $getName = "select * from userreg where lid = $lid";
+    $e = mysqli_query($con, $getName);
+    $nameval = mysqli_fetch_assoc($e);
+    $name = $nameval['name'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<title>e-complaint</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 <!--===============================================================================================-->
@@ -27,29 +43,36 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
 <nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
+  <div  class="container-fluid">
+    <!-- <div class="navbar-header">
       <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="index.php">Home</a></li>
+    </div> -->
+    <ul style='display: block;' class="nav navbar-nav">
+      <li class="active"><a href="userView.php">Home</a></li>
+      <li><a href="userComplaints.php">My Complaints</a></li>
+      <li><a href="userChangePassword.php">Change Password</a></li>
+      <li><a href="logout.php">Logout</a></li>
     </ul>
+	<div class='user-data' style="display: flex;float: right;">
+      <h4 style='color: white;padding: 5px;'><?php echo($name) ?></h4>
+    </div>
   </div>
 </nav>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-50 p-b-90">
 			<!-- <a href="index.php">Home</a> -->
-				<form class="login100-form validate-form flex-sb flex-w" action="register.php" method="POST">
+				<form class="login100-form validate-form flex-sb flex-w" action="" method="POST">
 					<span class="login100-form-title p-b-51">
-						Register Now!
+						Change Password
 					</span>
 
 					
-					<div class="wrap-input100 validate-input m-b-16" data-validate = "Name is required">
+					<!-- <div class="wrap-input100 validate-input m-b-16" data-validate = "Name is required">
 						<input class="input100" type="text" name="name" placeholder="Name">
 						<span class="focus-input100"></span>
 					</div>
@@ -64,17 +87,22 @@
                     <div class="wrap-input100 validate-input m-b-16" data-validate = "Phone number is required">
 						<input class="input100" type="text" name="cno" placeholder="Phone number">
 						<span class="focus-input100"></span>
+					</div> -->
+
+                    <div class="wrap-input100 validate-input m-b-16" data-validate = "Old Password is required">
+						<input class="input100" type="password" name="opass" placeholder="Old Password" required>
+						<span class="focus-input100"></span>
 					</div>
 
 
-                    <div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
-						<input class="input100" type="text" name="uname" placeholder="Email">
+                    <div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
+						<input class="input100" type="password" name="pass" placeholder="New Password" required>
 						<span class="focus-input100"></span>
 					</div>
 					
 					
-					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Confirmed Password is required">
+						<input class="input100" type="password" name="cpass" placeholder="Confirm Password" required>
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -88,7 +116,7 @@
 
 					<div class="container-login100-form-btn m-t-17">
 						<!-- <button class="login100-form-btn"> -->
-                        <input type="submit" class="login100-form-btn" name="register" value="Register">
+                        <input type="submit" class="login100-form-btn" name="register" value="Change Password">
 							<!-- Login -->
 						<!-- </button> -->
 					</div>
@@ -123,119 +151,54 @@
 
 
 
-
-
-
-
-<!-- <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <form action="register.php" method="POST">
-    <center>
-        <table>
-        <input type="hidden" name="hide">
-        <tr><td>name<input type="text" name="name"></td></tr>
-        <tr><td>place<input type="text" name="place"></td></tr>
-        <tr><td>contact no<input type="text" name="cno"></td></tr>
-        <tr><td>set username<input type="text" name="uname"></td></tr>
-        <tr><td>set password<input type="password" name="pass"></td></tr>
-
-        </table>
-        <input type="submit" name="register" value="Register">
-    
-    </center>
-    </form>
-</body>
-
-</html> -->
-
-
-
-
-
-
-
-
-
-
 <?php
+include 'db.php';
 
-    include 'db.php';
+if(isset($_POST['register']))
+{
+    if (isset($_POST['cpass']) and ($_POST['cpass']) != null) 
+	{
+		if (isset($_POST['pass']) and ($_POST['pass']) != null)
+		{
+            if (isset($_POST['opass']) and ($_POST['opass']) != null)
+		    {
+                $opass = $_POST['opass'];
+                $cpass = $_POST['cpass'];
+                $pass = $_POST['pass'];
 
-    if(isset($_POST['register']))
-    {
-		if (isset($_POST['name']) and ($_POST['name']) != null) 
-        {
-            if (preg_match('/^[A-Z a-z]*$/', $_POST['name'])) 
-            {
-				if (isset($_POST['place']) and ($_POST['place']) != null) 
-        		{
-            		if (preg_match('/^[A-Z a-z]*$/', $_POST['place'])) 
-            		{
-						if (isset($_POST['cno']) and ($_POST['cno']) != null) 
-                        {
-							if (preg_match('/^[1-9][0-9]{0,15}$/', $_POST['cno'])) 
-                        	{
-								if (isset($_POST['uname']) and ($_POST['uname']) != null)
-								{
-									if (preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $_POST['uname'])) 
-									{
-										if (isset($_POST['pass']) and ($_POST['pass']) != null)
-										{
-											$name = $_POST['name'];
-											$place = $_POST['place'];
-											$cno = $_POST['cno'];
-											$uname = $_POST['uname'];
-											$pass = $_POST['pass'];
+                $lid = $_SESSION['uid'];
 
-											$pass = md5($pass);
+                $qq = "select * from login WHERE lid = $lid";
+                // echo $qq;exit;
+                $ee = mysqli_query($con, $qq);
 
-											$q = "INSERT INTO login(username, password, status) values ('$uname','$pass',2)";
-											$r = mysqli_query($con, $q);
+                $opass = md5($opass);
+                      
+                    while($row = mysqli_fetch_assoc($ee)) {
+                        if($opass == $row['password']){
+                            if($cpass == $pass){
+                                $pass = md5($pass);
+                                
+                                $qry = "update login set password = '$pass' where lid = $lid";
+                                // echo $qry;exit;
+                                $e = mysqli_query($con, $qry);
+                            } else {
+                                echo "<script>alert('Password doesnot match')</script>";
+                            }
+            
+                            if($e) {
+                                echo "<script>alert('Password Changed')</script>";
+                            } else {
+                                echo "<script>alert(' failed')</script>";
+                            }
+                        } else echo "<script>alert('Old password doesnot match')</script>";
+                    }
+                
 
-											$q1 = "SELECT lid from login WHERE username = '$uname' and password = '$pass'";
-											$r1 = mysqli_query($con, $q1); 
-
-											$lid = null;
-											$row = mysqli_fetch_assoc($r1);
-											$lid = $row['lid'];
-											//echo $row[lid];exit;
-										
-											$qry = "INSERT into userreg(name,place,contact,lid) values ('$name','$place',$cno,$lid)";
-											//  echo $qry;exit;
-											$r = mysqli_query($con,$qry);
-											if($r)
-											{
-												echo "<script>alert('registration successful')</script>"; // used script for pop-up message
-												echo "<script> location.href='login.php'; </script>";
-											}
-											else{
-												echo "<script>alert('registration failed')</script>";
-												
-											}
-										}
-										else echo "<script>alert('password mandatory field')</script>";
-									}
-									else echo "<script>alert('Email is not valid')</script>";
-								} 
-								else echo "<script>alert('Email is mandatory')</script>";
-							} 
-							else echo "<script>alert('Enter Valid Phone number')</script>";
-						} 
-						else echo "<script>alert('Contact number mandatory')</script>";
-					} 
-					else echo "<script>alert('Enter valid place')</script>";
-				} 
-				else echo "<script>alert('Place is mandatory')</script>";
-			} 
-			else echo "<script>alert('Enter valid name')</script>";
-		} 
-		else echo "<script>alert('Name is mandatory')</script>";
-    }
-
+                // echo $cid;exit;
+                
+            }else echo "<script>alert('Old password mandatory field')</script>";    
+        }else echo "<script>alert('Password mandatory field')</script>";
+    }else echo "<script>alert('Confirm password mandatory field')</script>"; 
+}   
 ?>

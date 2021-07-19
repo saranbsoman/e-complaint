@@ -3,6 +3,9 @@ include 'db.php';
 if(!isset($_SESSION)) { 
     session_start();
     }
+    if(!isset($_SESSION['uid'])){
+        header('location:index.php');
+      }
     // $uid = $_GET['v'];
 
 	$qry = "select * from complaints, userreg where complaints.uid = userreg.lid and complaints.status = 0 ORDER BY `complaints`.`date` DESC";
@@ -23,9 +26,7 @@ if(!isset($_SESSION)) {
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
+    
     <ul class="nav navbar-nav">
       <li class="active"><a href="adminView.php">Home</a></li>
       <li><a href="employeeRegister.php">Add Employee</a></li>

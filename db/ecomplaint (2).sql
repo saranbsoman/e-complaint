@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 13, 2021 at 02:56 PM
+-- Generation Time: Jul 18, 2021 at 03:54 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -52,7 +52,12 @@ INSERT INTO `complaints` (`cid`, `complaint`, `date`, `time`, `uid`, `eid`, `sta
 (47, 'This is a test complaint message', '2021-05-30', '08:15:21', 27, 11, 2),
 (48, 'This is secind complaint', '2021-05-30', '08:16:32', 27, 10, 1),
 (49, 'Sample complaint', '2021-07-10', '05:58:05', 30, 11, 2),
-(50, 'Misbehave', '2021-07-10', '05:58:33', 30, 7, 0);
+(50, 'Misbehave', '2021-07-10', '05:58:33', 30, 7, 1),
+(51, 'some complaint against Fahad', '2021-07-16', '07:00:11', 32, 13, 2),
+(52, 'Complaint ...', '2021-07-16', '07:55:28', 25, 13, 3),
+(53, 'too arrogant', '2021-07-16', '11:12:41', 32, 13, 3),
+(54, 'Demo complaint', '2021-07-18', '08:05:03', 32, 12, 3),
+(55, 'Jishnu is very rude', '2021-07-18', '03:18:25', 36, 12, 3);
 
 -- --------------------------------------------------------
 
@@ -80,7 +85,8 @@ INSERT INTO `employeereg` (`eid`, `name`, `place`, `contactno`, `designation`, `
 (9, 'Suresh', 'tvm', 2147483647, 'asd', 'download.jpg', 26),
 (10, 'Winsten', 'Ernakulam', 2147483647, 'Manager', 'images (3).jpg', 28),
 (11, 'Jon Snow', 'Kollam', 2147483647, 'Sales', 'images (6).jpg', 29),
-(12, 'Jishnu', 'Punaloor', 2147483647, 'CEO', 'images (5).jpg', 31);
+(12, 'Jishnu', 'Punaloor', 2147483647, 'CEO', 'images (5).jpg', 31),
+(13, 'Fahad Fassil', 'Meerut', 2147483647, 'Designer', 'images (5).jpg', 34);
 
 -- --------------------------------------------------------
 
@@ -112,7 +118,11 @@ INSERT INTO `login` (`lid`, `username`, `password`, `status`) VALUES
 (28, 'winsten@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 1),
 (29, 'jon@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 1),
 (30, 'ashwin@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 2),
-(31, 'jishnu@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 1);
+(31, 'jishnu@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 1),
+(32, 'rekha@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 2),
+(34, 'fahadfassil@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 1),
+(35, 'vivek@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 2),
+(36, 'athulkrishna@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', 2);
 
 -- --------------------------------------------------------
 
@@ -138,7 +148,10 @@ INSERT INTO `userreg` (`id`, `name`, `place`, `contact`, `lid`) VALUES
 (26, 'Ajo John', 'Kottarakara', 2147483647, 24),
 (27, 'Emma', 'asd', 2147483647, 25),
 (28, 'Adityan', 'kollam', 2147483647, 27),
-(29, 'Ashwin', 'Punaloor', 2147483647, 30);
+(29, 'Ashwin', 'Punaloor', 2147483647, 30),
+(30, 'Rekha', 'Kottayam', 2147483647, 32),
+(31, 'Vivek', 'Kottayam', 2147483647, 35),
+(32, 'Athul Krishna', 'Boston', 2147483647, 36);
 
 --
 -- Indexes for dumped tables
@@ -177,25 +190,25 @@ ALTER TABLE `userreg`
 -- AUTO_INCREMENT for table `complaints`
 --
 ALTER TABLE `complaints`
-  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `employeereg`
 --
 ALTER TABLE `employeereg`
-  MODIFY `eid` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `eid` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `lid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `lid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `userreg`
 --
 ALTER TABLE `userreg`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

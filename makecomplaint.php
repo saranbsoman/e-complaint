@@ -1,6 +1,9 @@
 <?php
 include 'db.php';
 session_start();
+if(!isset($_SESSION['uid'])){
+  header('location:index.php');
+}
 $uid = $_SESSION['uid'];
 // echo $uid;exit;
 
@@ -17,12 +20,13 @@ $uid = $_SESSION['uid'];
 <body>
     <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
+    <!-- <div class="navbar-header">
       <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
+    </div> -->
     <ul class="nav navbar-nav">
       <li class="active"><a href="userView.php">Home</a></li>
       <li><a href="userComplaints.php">My Complaints</a></li>
+      <li><a href="changePassword.php">Change Password</a></li>
       <li><a href="logout.php">Logout</a></li>
     </ul>
   </div>
@@ -40,12 +44,13 @@ $uid = $_SESSION['uid'];
     ?>
 
     <center>
-    <h1>Hello <?php echo $_SESSION['username'] ?>! </h1>
+    
+     
     <div>
         <form action="" method="POST">
             <table>
 
-                    <tr><td><Textarea placeholder="Make your complaint here..." name="complaint"></Textarea></td></tr><br><br>
+                    <tr><td><Textarea style='width: 700px;height: 150px' placeholder="Make your complaint here..." name="complaint"></Textarea></td></tr><br><br>
 
             </table>
         

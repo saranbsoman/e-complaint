@@ -3,6 +3,9 @@ include 'db.php';
 if(!isset($_SESSION)) { 
     session_start();
     }
+    if(!isset($_SESSION['uid'])){
+        header('location:index.php');
+      }
     $uid = $_GET['v'];
     // echo $uid;exit;
 
@@ -24,9 +27,7 @@ if(!isset($_SESSION)) {
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
+    
     <ul class="nav navbar-nav">
       <li class="active"><a href="adminView.php">Home</a></li>
       <li><a href="employeeRegister.php">Add Employee</a></li>
@@ -44,6 +45,7 @@ if(!isset($_SESSION)) {
                     <th>Complaint</th>
                     <th>Date</th>
                     <th>Complaint From</th>
+                    <th>Status</th>
 				</tr>
 			<div>
 				<?php
@@ -63,10 +65,15 @@ if(!isset($_SESSION)) {
                     <td><?php echo $row['complaint']?></td>
                     <td><?php echo $row['date']?></td>
                     <td><?php echo $row['name']?></td>
+                    <?php if($row['status'] == 3) {
+                        echo"<td style='color:blue;'><b>Seen</b></td>";
+                    } else {
+                        echo"<td style='color:green;'><i>Not Read</i></td>";
+                    } ?>
                     <!-- -->
                 </tr>
             
-            <!-- <img src="empimage/<?php echo $row['image']?>"style="max-width: 100px;"><br> -->
+            <!-- <img src="empimage/"style="max-width: 100px;"><br> -->
             <!-- echo "<img src='empimage/$row["image"]' style='max-width: 100px;'>"; -->
 <?php
         $count++;}

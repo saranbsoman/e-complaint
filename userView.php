@@ -2,13 +2,23 @@
 include 'db.php';
 if(!isset($_SESSION)) { 
     session_start();
-    }
+}
+if(!isset($_SESSION['uid'])){
+  header('location:index.php');
+}
     // $uid = $_GET['v'];
 
 	$qry = "select * from employeereg";
     // echo $qry;exit;
     $r = mysqli_query($con,$qry);
     $count = 1;
+
+    $lid =  $_SESSION['uid'];
+
+    $getName = "select * from userreg where lid = $lid";
+    $e = mysqli_query($con, $getName);
+    $nameval = mysqli_fetch_assoc($e);
+    $name = $nameval['name'];
 ?>
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -16,14 +26,18 @@ if(!isset($_SESSION)) {
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
+    <!-- <div class="navbar-header">
       <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
+    </div> -->
     <ul class="nav navbar-nav">
       <li class="active"><a href="userView.php">Home</a></li>
       <li><a href="userComplaints.php">My Complaints</a></li>
+      <li><a href="userChangePassword.php">Change Password</a></li>
       <li><a href="logout.php">Logout</a></li>
     </ul>
+    <div class='user-data' style="display: flex;float: right;">
+      <h4 style='color: white;padding: 5px;'><?php echo($name) ?></h4>
+    </div>
   </div>
 </nav>
 
@@ -50,7 +64,7 @@ if(!isset($_SESSION)) {
                     <td><?php echo $count?></td>
                     <td><?php echo $row['name']?></td>
                     <td><?php echo $row['designation']?></td>
-                    <td><img src="empimage/<?php echo $row['image']?>"style="max-width: 100px;"></td>
+                    <td><img  src="empimage/<?php echo $row['image']?>"style="max-width: 50px;max-height: 50px;border-radius: 50px;"></td>
                     <td><a href="makecomplaint.php?v=<?php echo $row['lid']?>" class="btn btn-primary btn-xs">Make Complaint</a></td>
                 </tr>
             
@@ -60,7 +74,7 @@ if(!isset($_SESSION)) {
         $count++;}
     
     }
-    
+  
 
     // echo $username;
 
@@ -77,7 +91,7 @@ if(!isset($_SESSION)) {
 
 </body>
 </html>
-
+ 
 
 
 

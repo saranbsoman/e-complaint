@@ -2,8 +2,10 @@
 include 'db.php';
 if(!isset($_SESSION)) { 
     session_start();
-    }
-
+}
+if(!isset($_SESSION['uid'])){
+  header('location:index.php');
+}   
 	$qry = "select * from employeereg";
     $r = mysqli_query($con,$qry);
     $count = 1;
@@ -23,9 +25,6 @@ if(!isset($_SESSION)) {
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="adminView.php">Home</a></li>
       <li><a href="employeeRegister.php">Add Employee</a></li>
@@ -69,7 +68,8 @@ if(!isset($_SESSION)) {
 <?php
         $count++;}
     
-    }
+  }
+
     
 
     // echo $username;

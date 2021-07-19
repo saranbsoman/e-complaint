@@ -3,6 +3,9 @@ include 'db.php';
 if(!isset($_SESSION)) { 
     session_start();
     }
+    if(!isset($_SESSION['uid'])){
+        header('location:index.php');
+      }
     $eid = $_GET['v'];
     $date = $_GET['w'];
 

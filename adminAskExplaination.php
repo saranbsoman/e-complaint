@@ -3,6 +3,9 @@ include 'db.php';
 if(!isset($_SESSION)) { 
     session_start();
     }
+    if(!isset($_SESSION['uid'])){
+        header('location:index.php');
+      }
     $cid = $_GET['v'];
 
     // echo $cid;exit;

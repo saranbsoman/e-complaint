@@ -3,6 +3,9 @@ include 'db.php';
 if(!isset($_SESSION)) { 
     session_start();
     }
+    if(!isset($_SESSION['uid'])){
+        header('location:index.php');
+      }
     // $uid = $_GET['v'];
 
     $lid =  $_SESSION['uid'];
@@ -17,6 +20,13 @@ if(!isset($_SESSION)) {
     // echo $qry;exit;
     $r = mysqli_query($con,$qry);
     $count = 1;
+
+    $lid =  $_SESSION['uid'];
+
+    $getName = "select * from userreg where lid = $lid";
+    $e = mysqli_query($con, $getName);
+    $nameval = mysqli_fetch_assoc($e);
+    $name = $nameval['name'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,14 +41,18 @@ if(!isset($_SESSION)) {
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <div class="navbar-header">
+    <!-- <div class="navbar-header">
       <a class="navbar-brand" href="index.php">e-Complaint</a>
-    </div>
+    </div> -->
     <ul class="nav navbar-nav">
       <li class="active"><a href="userView.php">Home</a></li>
       <li><a href="userComplaints.php">My Complaints</a></li>
+      <li><a href="userChangePassword.php">Change Password</a></li>
       <li><a href="logout.php">Logout</a></li>
     </ul>
+    <div class='user-data' style="display: flex;float: right;">
+      <h4 style='color: white;padding: 5px;'><?php echo($name) ?></h4>
+    </div>
   </div>
 </nav>
 
@@ -56,6 +70,7 @@ if (mysqli_num_rows($r)) {
                     <th>Designation</th>
                     <th>Filed to</th>
                     <th>Date</th>
+                    <th>Status</th>
 				</tr>
 			<div>
 				<?php
@@ -76,7 +91,12 @@ if (mysqli_num_rows($r)) {
                     <td><?php echo $row['designation']?></td>
                     <td><?php echo $row['name']?></td>
                     <td><?php echo $row['date']?></td>
-                    <td><a href="userComplaintDelete.php?v=<?php echo $row['eid']?>&w=<?php echo $row['date']?>" class="btn btn-danger">Delete</a></td>
+                    <!-- <td><a href="userComplaintDelete.php?v=<?php echo $row['eid']?>&w=<?php echo $row['date']?>" class="btn btn-danger">Delete</a></td> -->
+                    <?php if($row['status'] == 3) {
+                        echo"<td style='color:green;'><b>Action Taken</b></td>";
+                    } else {
+                        echo"<td style='color:blue;'><i>Complaint recieved</i></td>";
+                    } ?>
                 </tr>
             
             <!-- <img src="empimage/<?php echo $row['image']?>"style="max-width: 100px;"><br> -->
